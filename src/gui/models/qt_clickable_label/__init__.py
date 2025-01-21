@@ -1,0 +1,1 @@
+from .qt_clickable_label import QtClickableLabel
