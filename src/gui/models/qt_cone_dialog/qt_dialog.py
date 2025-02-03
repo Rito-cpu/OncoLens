@@ -5,7 +5,7 @@ from src.core.keyword_store import NO_CONE, COMPARISON_CONE
 from src.core.app_config import IMG_RSC_PATH
 from src.core.json.json_themes import Themes
 from src.gui.models.py_push_button import PyPushButton
-from src.gui.models.qt_settings_box.qt_cone_settings import ConeSettings
+from src.gui.models.qt_basic_settings.qt_cone_settings import ConeSettings
 from .qt_comparison_widget import QtComparisonConeWidget
 from .styles import frame_template
 

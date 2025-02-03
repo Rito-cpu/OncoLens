@@ -391,25 +391,44 @@ def plot_normal_points(normal_y_min: float, lesion_data: dict, clean_lesions: bo
                 firstInstance = np.argwhere(~pd.isna(lesion_volumes[lesion_index])).flatten()
                 firstInstance = firstInstance[0]
                 plotCondition = lesion_index in les_scan_removal.keys()#  and len(lesScanRemoval[li]) != 0
+            test_x = []
+            test_y = []
+            
             for scan_index in range(lesion_data["num_scans"]):
                 if (lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days >= plot_start_time:
                     if clean_lesions:
                         if plotCondition and scan_index == firstInstance:
                             if lesion_index in nonsystemic_treatments["surgery_index"]:
-                                normal_ax.plot((lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days, lesion_volumes[lesion_index][scan_index], color='gold',
-                                            marker='*', markersize=lesion_marker_size * 2, alpha=0.3)
+                                normal_ax.plot(
+                                    (lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days,
+                                    lesion_volumes[lesion_index][scan_index],
+                                    color='gold',
+                                    marker='*',
+                                    markersize=lesion_marker_size * 2,
+                                    alpha=0.3
+                                )
                             elif lesion_index in nonsystemic_treatments["radiation_index"]:
-                                normal_ax.plot((lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days, lesion_volumes[lesion_index][scan_index], color='black',
-                                            marker='D', markersize=lesion_marker_size*0.75, alpha=0.3)
+                                normal_ax.plot(
+                                    (lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days, 
+                                    lesion_volumes[lesion_index][scan_index], 
+                                    color='black',
+                                    marker='D', 
+                                    markersize=lesion_marker_size*0.75, 
+                                    alpha=0.3
+                                )
                         elif plotCondition and scan_index in les_scan_removal[lesion_index]:
                             continue
                         # Plot everything else normally
                         # if lesion_volumes[lesion_index][scan_index] <= get_detect_size():
                         if lesion_volumes[lesion_index][scan_index] <= DETECT_SIZE:
-                            normal_ax.plot((lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days,
-                                        lesion_volumes[lesion_index][scan_index] + detected_lesion_offset * detected_lesion_offset_ticks[scan_index],
-                                        color=lesion_color_list[lesion_index, :], marker='x', markersize=detected_lesion_marker_size,
-                                        linewidth=detected_lesion_marker_width)
+                            normal_ax.plot(
+                                (lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days,
+                                lesion_volumes[lesion_index][scan_index] + detected_lesion_offset * detected_lesion_offset_ticks[scan_index],
+                                color=lesion_color_list[lesion_index, :], 
+                                marker='x', 
+                                markersize=detected_lesion_marker_size,
+                                linewidth=detected_lesion_marker_width
+                            )
                             detected_lesion_offset_ticks[scan_index] = detected_lesion_offset_ticks[scan_index] + 1
                         # Plot normal points
                         else:
@@ -417,6 +436,7 @@ def plot_normal_points(normal_y_min: float, lesion_data: dict, clean_lesions: bo
                                 normal_ax.plot((lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days, lesion_volumes[lesion_index][scan_index],
                                             color=lesion_color_list[lesion_index],
                                             marker='^', markersize=lesion_marker_size / 2)
+                                # TODO: Remove linestyle manually here and make it an option
                             else:
                                 normal_ax.plot((lesion_data["scan_dates"][scan_index] - lesion_data["dos"]).days, lesion_volumes[lesion_index][scan_index],
                                             color=lesion_color_list[lesion_index],

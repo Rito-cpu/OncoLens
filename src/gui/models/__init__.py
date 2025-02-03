@@ -7,7 +7,7 @@ from .py_credits_bar import PyCredits
 from .py_push_button import PyPushButton
 from .py_table_widget import PyTableWidget, QtConeTable
 from .py_toggle import PyToggle
-from .qt_settings_box import *
+from .qt_basic_settings import *
 from .qt_line_button import QtButtonLineEdit
 from .qt_circle_progress_bar import QtCircleProgressBar
 from .qt_combo_widget import QtComboBox

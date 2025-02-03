@@ -13,7 +13,7 @@ from src.core.json.json_themes import Themes
 from src.core.json.json_encoder import NumpyArrayEncoder
 from src.core.validation.validate_file import is_json_file, is_excel_file
 from src.core.validation.excel_utils import initiate_excel_check
-from src.core.validation.data_validation import load_file, validate_sheets
+from src.core.validation.data_validation import preprocess_data
 from src.gui.views.windows.ui_main_window import UI_MainWindow
 from src.gui.models import *
 from src.core.processing.mysql_connector import MySQLConnector
@@ -180,14 +180,31 @@ class MainFunctions():
     def inititate_file_check(self, upload_widget):
         data_path = upload_widget.submit_menu_data()
         if data_path:
-            # TODO: Initiate excel sheet checking
-            # TODO: Catch valueerrors here with messagebox
-            file_dataframe = load_file(data_path)
             try:
-                is_valid_excel = validate_sheets(file_dataframe)
+                # TODO: Check for excel file using utility file in core
+                file_data = preprocess_data(data_path)
+
+                # Collapse boxes here to prevent any resizing issues when applying new content
+                lesion_groupbox: SettingsGroupBox
+                lesion_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "lesion_groupbox")
+                historical_groupbox: SettingsGroupBox
+                historical_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "historical_groupbox")
+                available_groupbox: SettingsGroupBox
+                available_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "available_groupbox")
+
+                if lesion_groupbox.is_expanded():
+                    lesion_groupbox.collapse_widget()
+                if historical_groupbox.is_expanded():
+                    historical_groupbox.collapse_widget()
+                if available_groupbox.is_expanded():
+                    available_groupbox.collapse_widget()
+
+                MainFunctions.setup_etb_settings(self, file_data)
                 MainFunctions.set_page(self, self.ui.load_pages.etb_settings_subpage)
-                bttn = self.ui.right_column.etb_bttn_frame.findChild(PyPushButton, "parameter_menu_bttn")
-                bttn.set_highlight()
+                upload_bttn = self.ui.right_column.etb_bttn_frame.findChild(PyPushButton, "input_file_menu_bttn")
+                settings_bttn = self.ui.right_column.etb_bttn_frame.findChild(PyPushButton, "parameter_menu_bttn")
+                upload_bttn.remove_highlight()
+                settings_bttn.set_highlight()
             except ValueError as ve:
                 exit_buttons = {
                     "Ok": QMessageBox.ButtonRole.AcceptRole,
@@ -208,66 +225,12 @@ class MainFunctions():
             return
         else:
             return
-        # Collapse boxes here to prevent any resizing issues
-        # when applying new content
-        lesion_groupbox: SettingsGroupBox
-        lesion_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "lesion_groupbox")
-        historical_groupbox: SettingsGroupBox
-        historical_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "historical_groupbox")
-        available_groupbox: SettingsGroupBox
-        available_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "available_groupbox")
-
-        if lesion_groupbox.is_expanded():
-            lesion_groupbox.collapse_widget()
-        if historical_groupbox.is_expanded():
-            historical_groupbox.collapse_widget()
-        if available_groupbox.is_expanded():
-            available_groupbox.collapse_widget()
-
-        # Object stores excel file data upon successful check
-        #result_object = MainFunctions.file_check(self, text_entry)
 
         #if result_object:
         #    MainFunctions.setup_etb_settings(self, result_object)
 
-    def file_check(self, user_input: str):
-        # Prepare error message box
-        file_msg = QtMessage(
-            buttons={"Ok": QMessageBox.ButtonRole.AcceptRole},
-            color=self.themes["app_color"]["white"],
-            bg_color_one=self.themes["app_color"]["dark_one"],
-            bg_color_two=self.themes["app_color"]["bg_one"],
-            bg_color_hover=self.themes["app_color"]["dark_three"],
-            bg_color_pressed=self.themes["app_color"]["dark_four"]
-        )
-        file_msg.setIcon(QMessageBox.Icon.Critical)
-
-        # Valid user-entry
-        if is_excel_file(user_input) and os.path.exists(user_input):
-            file_result_obj = initiate_excel_check(user_input)
-            if file_result_obj.file_error and not file_result_obj.file_warning:
-                file_msg.setText("File submission received an error.")
-                file_msg.setDetailedText(file_result_obj.file_error_message)
-                file_msg.exec()
-                return
-            elif not file_result_obj.file_error and file_result_obj.file_warning:
-                file_msg.setIcon(QMessageBox.Icon.Warning)
-                file_msg.setText("File submission contains warning(s).")
-                file_msg.setDetailedText(file_result_obj.file_warning_message)
-                file_msg.exec()
-                MainFunctions.set_page(self, self.ui.load_pages.etb_settings_subpage)
-                return file_result_obj
-            elif file_result_obj.file_error and file_result_obj.file_warning:
-                file_msg.setText("File submission contains error(s) and warning(s).")
-                file_msg.setDetailedText(file_result_obj.file_error_message)
-                file_msg.exec()
-                return
-            else:
-                MainFunctions.set_page(self, self.ui.load_pages.etb_settings_subpage)
-                return file_result_obj
-
-    def setup_etb_settings(self, result_object):#  settings, file):
-        settings = result_object.data
+    def setup_etb_settings(self, file_data: dict):
+        settings = file_data
 
         general_groupbox: GeneralSettings
         general_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "general_groupbox")
@@ -279,7 +242,7 @@ class MainFunctions():
         available_groupbox = self.ui.load_pages.parameter_scroll_contents.findChild(QWidget, "available_groupbox")
 
         lesion_data = LesionSettings(
-            data_dict=settings["lesion_data"],
+            data_dict=settings["scan_data"],
             header_color=self.themes["app_color"]["dark_four"],
             bg_color=self.themes["app_color"]["dark_two"],
             circle_color=self.themes["app_color"]["white"], # icon_color
@@ -289,17 +252,17 @@ class MainFunctions():
         lesion_data.setObjectName(u"lesion_settings")
 
         historical_data = TxSettings(
-            data_dict=settings["historical_treatment_data"],
+            data_dict=settings["historical_treatments"],
             header_color=self.themes["app_color"]["dark_four"],
             treatment_bg=self.themes["app_color"]["blue_one"],
             parent=historical_groupbox
         )
         historical_data.setObjectName(u"historical_treatment_settings")
 
-        lesions = settings["lesion_data"]["Abbr"]
+        lesions = settings["scan_data"]["abbr"]
         available_tx_data = AvailableTxSettings(
             lesion_names=lesions,
-            data_dict=settings["available_treatment_data"],
+            data_dict=settings["available_treatments"],
             header_color=self.themes["app_color"]["dark_four"],
             treatment_bg=self.themes["app_color"]["blue_one"],
             bg_color=self.themes["app_color"]["dark_two"],
@@ -309,7 +272,7 @@ class MainFunctions():
         )
         available_tx_data.setObjectName(u"available_treatment_settings")
 
-        general_groupbox.set_patient_file(settings["excel_file_path"])
+        general_groupbox.set_patient_file(settings["data_path"])
         lesion_groupbox.set_content(lesion_data)
         historical_groupbox.set_content(historical_data)
         available_groupbox.set_content(available_tx_data)

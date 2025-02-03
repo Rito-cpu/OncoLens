@@ -32,10 +32,10 @@ class TxSettings(QWidget):
         themes = Themes()
         self.themes = themes.items
 
-        self.treatment_names = data_dict["Name"]
-        self.treatment_abbr = data_dict["Abbr"]
-        self.dates_on = data_dict["On"]
-        self.dates_off = data_dict["Off"]
+        self.treatment_names = data_dict["names"]
+        self.treatment_abbr = data_dict["abbr"]
+        self.dates_on = data_dict["date_on"]
+        self.dates_off = data_dict["date_off"]
         self.num_treatments = len(self.treatment_names)
 
         self._abbr_labels = []

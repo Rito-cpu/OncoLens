@@ -315,27 +315,27 @@ class SetupMainWindow:
         # * ETB File Page Setup * #
         etb_upload_widget = QtUploadMainWidget(parent=self.ui.load_pages.file_scroll_contents)
 
-        self.nonsystemic_table = PyTableWidget(
-            radius = 8,
-            color = self.themes["app_color"]["text_foreground"],
-            selection_color = self.themes["app_color"]["context_color"],
-            bg_color = self.themes["app_color"]["dark_one"],
-            header_horizontal_color = self.themes["app_color"]["dark_two"],
-            header_vertical_color = self.themes["app_color"]["bg_three"],
-            bottom_line_color = self.themes["app_color"]["bg_three"],
-            grid_line_color = self.themes["app_color"]["bg_one"],
-            scroll_bar_bg_color = self.themes["app_color"]["bg_one"],
-            scroll_bar_btn_color = self.themes["app_color"]["dark_four"],
-            context_color = self.themes["app_color"]["context_color"]
-        )
-        self.nonsystemic_table.hide()
+        #self.nonsystemic_table = PyTableWidget(
+        #    radius = 8,
+        #    color = self.themes["app_color"]["text_foreground"],
+        #    selection_color = self.themes["app_color"]["context_color"],
+        #    bg_color = self.themes["app_color"]["dark_one"],
+        #    header_horizontal_color = self.themes["app_color"]["dark_two"],
+        #    header_vertical_color = self.themes["app_color"]["bg_three"],
+        #    bottom_line_color = self.themes["app_color"]["bg_three"],
+        #    grid_line_color = self.themes["app_color"]["bg_one"],
+        #    scroll_bar_bg_color = self.themes["app_color"]["bg_one"],
+        #    scroll_bar_btn_color = self.themes["app_color"]["dark_four"],
+        #    context_color = self.themes["app_color"]["context_color"]
+        #)
+        #self.nonsystemic_table.hide()
 
-        #self.submit_file_bttn.clicked.connect(lambda: MainFunctions.inititate_file_check(self, self.etb_file_entry.text()))
         etb_upload_widget.submit_data_bttn.clicked.connect(lambda: MainFunctions.inititate_file_check(self, etb_upload_widget))
 
         self.ui.load_pages.file_content_layout.addWidget(etb_upload_widget)
 
         # * ETB Parameters Page Setup * #
+        # TODO: Parent should be self.ui.load_pages.parameter_scroll_contents
         self.general_groupbox = GeneralSettings(
             header_color=self.themes["app_color"]["dark_four"],
             toggle_bg_color=self.themes["app_color"]["dark_two"],
@@ -381,8 +381,6 @@ class SetupMainWindow:
             parent=self.ui.right_column.etb_bttn_frame
         )
         self.submit_parameters_bttn.setObjectName(u"submit_parameters_bttn")
-        # self.submit_parameters_bttn.setMinimumHeight(40)
-        # self.submit_parameters_bttn.setFixedWidth(185)
         self.submit_parameters_bttn.setMinimumSize(120, 40)
         self.submit_parameters_bttn.clicked.connect(self.start_table_window)
 

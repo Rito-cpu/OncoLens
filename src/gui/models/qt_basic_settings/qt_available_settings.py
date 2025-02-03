@@ -37,9 +37,9 @@ class AvailableTxSettings(QWidget):
         self._bg_color = bg_color
         self._circle_color = circle_color
         self._active_color = active_color
-        self._available_tx_names = data_dict['Name']
-        self._available_tx_abbr = data_dict['Abbr']
-        if data_dict['Name'] is None or data_dict['Abbr'] is None:
+        self._available_tx_names = data_dict['names']
+        self._available_tx_abbr = data_dict['abbr']
+        if data_dict['names'] is None or data_dict['abbr'] is None:
             self.num_available_tx = 0
         else:
             self.num_available_tx = len(self._available_tx_names)

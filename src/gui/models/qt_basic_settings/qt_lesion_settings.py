@@ -56,8 +56,8 @@ class LesionSettings(QWidget):
         self.sensitivity_mult_list = []
         self.offset_list = []
 
-        self._lesion_names = data_dict['Name']
-        self._lesion_abbr = data_dict['Abbr']
+        self._lesion_names = data_dict['names']
+        self._lesion_abbr = data_dict['abbr']
         self._num_lesions = len(self._lesion_names)
 
         self.setup_widget()
@@ -187,9 +187,11 @@ class LesionSettings(QWidget):
             # Linking simulation checkbox to respective plot checkbox - cannot have a non-plotted lesion and simulate it too
             self.plot_list[-1].toggled.connect(partial(self.validate_linked_simulation, index))
 
-            growth_box = QtNumEntry(font_size=self._font_size,
-                                    bg_color=self.themes["app_color"]["dark_one"],
-                                    parent=lesion_widget)
+            growth_box = QtNumEntry(
+                font_size=self._font_size,
+                bg_color=self.themes["app_color"]["dark_one"],
+                parent=lesion_widget
+            )
             growth_box.setObjectName(u"growth_box")
             growth_box.setDecimals(3)
             growth_box.setRange(0, 0.07)
@@ -197,9 +199,11 @@ class LesionSettings(QWidget):
             growth_box.setValue(0.03)
             self.growth_list.append(growth_box)
 
-            growth_mult_box = QtNumEntry(font_size=self._font_size,
-                                    bg_color=self.themes["app_color"]["dark_one"],
-                                    parent=lesion_widget)
+            growth_mult_box = QtNumEntry(
+                font_size=self._font_size,
+                bg_color=self.themes["app_color"]["dark_one"],
+                parent=lesion_widget
+            )
             growth_mult_box.setObjectName(u"growth_mult_box")
             growth_mult_box.setDecimals(2)
             growth_mult_box.setRange(0, 100)
@@ -207,9 +211,11 @@ class LesionSettings(QWidget):
             growth_mult_box.setValue(1)
             self.growth_mult_list.append(growth_mult_box)
 
-            efficacy_mult_box = QtNumEntry(font_size=self._font_size,
-                                    bg_color=self.themes["app_color"]["dark_one"],
-                                    parent=lesion_widget)
+            efficacy_mult_box = QtNumEntry(
+                font_size=self._font_size,
+                bg_color=self.themes["app_color"]["dark_one"],
+                parent=lesion_widget
+            )
             efficacy_mult_box.setObjectName(u"efficacy_mult_box")
             efficacy_mult_box.setDecimals(2)
             efficacy_mult_box.setRange(0, 100)
@@ -217,9 +223,11 @@ class LesionSettings(QWidget):
             efficacy_mult_box.setValue(1)
             self.drug_mult_list.append(efficacy_mult_box)
 
-            resistance_mult_box = QtNumEntry(font_size=self._font_size,
-                                    bg_color=self.themes["app_color"]["dark_one"],
-                                    parent=lesion_widget)
+            resistance_mult_box = QtNumEntry(
+                font_size=self._font_size,
+                bg_color=self.themes["app_color"]["dark_one"],
+                parent=lesion_widget
+            )
             resistance_mult_box.setObjectName(u"resistance_mult_box")
             resistance_mult_box.setDecimals(2)
             resistance_mult_box.setRange(0, 100)

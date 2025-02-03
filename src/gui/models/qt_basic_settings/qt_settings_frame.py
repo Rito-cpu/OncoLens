@@ -5,19 +5,21 @@ from .styles import *
 
 
 class SettingsGroupBox(QWidget):
-    def __init__(self,
-                title: str,
-                animation_duration: int=400,
-                color: str="black",
-                radius: int=13,
-                bg_color_one: str="rgba(12, 205, 163, 255)",
-                bg_color_two: str="rgba(29, 209, 167, 255)",
-                bg_color_three: str="rgba(193, 252, 211, 255)",
-                point_size: int=14,
-                parent=None) -> None:
+    def __init__(
+        self,
+        title: str,
+        animation_duration: int=400,
+        color: str="black",
+        radius: int=13,
+        bg_color_one: str="rgba(12, 205, 163, 255)",
+        bg_color_two: str="rgba(29, 209, 167, 255)",
+        bg_color_three: str="rgba(193, 252, 211, 255)",
+        point_size: int=14,
+        parent=None
+    ) -> None:
         super().__init__()
 
-        if parent != None:
+        if parent is not None:
             self.setParent(parent)
 
         self._title = title

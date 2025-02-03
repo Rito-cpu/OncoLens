@@ -88,6 +88,9 @@ class NonSystemicSettings(QWidget):
             matrix_values.append(col_values)
 
         matrix_df = pd.DataFrame(matrix_values)
+        print(matrix_df)
+        print(self._lesion_names)
+        print(self._tx_names)
         matrix_df.columns = self._lesion_names
         matrix_df.index = self._tx_names
 
