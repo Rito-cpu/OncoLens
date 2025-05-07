@@ -398,6 +398,47 @@ class Ui_MainPages(object):
 
         self.pages.addWidget(self.enhanced_results_page)
 
+        # **************************************
+        # *** Abstract Visualizer Page Setup ***
+        # **************************************
+        self.abstract_visualizer_page = QWidget()
+        self.abstract_visualizer_page.setObjectName("abstract_visualizer_page")
+
+        self.visualizer_scroll_content = QWidget()
+        self.visualizer_scroll_content.setObjectName("visualizer_scroll_content")
+        self.visualizer_scroll_content.setGeometry(QRect(0, 0, 840, 580))
+        self.visualizer_scroll_content.setStyleSheet("background: transparent;")
+
+        visualizer_scroll_area = QScrollArea(self.abstract_visualizer_page)
+        visualizer_scroll_area.setObjectName("visualizer_scroll_area")
+        visualizer_scroll_area.setStyleSheet("background: transparent;")
+        visualizer_scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        visualizer_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        visualizer_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        visualizer_scroll_area.setWidgetResizable(True)
+        visualizer_scroll_area.setWidget(self.visualizer_scroll_content)
+
+        self.visualizer_page_title = QLabel(self.abstract_visualizer_page)
+        self.visualizer_page_title.setObjectName("visualizer_page_title")
+        self.visualizer_page_title.setMaximumSize(QSize(16777215, 40))
+        self.visualizer_page_title.setStyleSheet("font-size: 18px; font-weight: bold;")
+        self.visualizer_page_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.visualizer_page_title.hide()
+
+        self.visualizer_scroll_layout = QVBoxLayout(self.visualizer_scroll_content)
+        self.visualizer_scroll_layout.setObjectName('visualizer_scroll_layout')
+        self.visualizer_scroll_layout.setContentsMargins(5, 5, 5, 5)
+        self.visualizer_scroll_layout.setSpacing(25)
+
+        self.abstract_visualizer_page_layout = QVBoxLayout(self.abstract_visualizer_page)
+        self.abstract_visualizer_page_layout.setObjectName("abstract_visualizer_page_layout")
+        self.abstract_visualizer_page_layout.setContentsMargins(15, 5, 15, 5)
+        self.abstract_visualizer_page_layout.setSpacing(5)
+        self.abstract_visualizer_page_layout.addWidget(self.visualizer_page_title)
+        self.abstract_visualizer_page_layout.addWidget(visualizer_scroll_area)
+
+        self.pages.addWidget(self.abstract_visualizer_page)
+
         # Page 3 Frame/Layout creation
         self.rosetta_model_page = QWidget()
         self.rosetta_model_page.setObjectName(u"rosetta_page_1")
@@ -415,7 +456,7 @@ class Ui_MainPages(object):
 
         self.page_3_layout.addWidget(self.empty_page_label)
 
-        self.pages.addWidget(self.rosetta_model_page)
+        #self.pages.addWidget(self.rosetta_model_page)
 
         self.main_pages_layout.addWidget(self.pages)
 

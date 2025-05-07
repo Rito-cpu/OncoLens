@@ -89,4 +89,3 @@ class QtBasicSettingsWidget(QWidget):
             self.historical_treatments_box.collapse_widget()
         if self.available_treatments_box.is_expanded():
             self.available_treatments_box.collapse_widget()
-

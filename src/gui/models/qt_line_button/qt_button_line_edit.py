@@ -19,13 +19,13 @@ class QtButtonLineEdit(QGroupBox):
             title_color: str="white",
             color_one: str="black",
             color_two: str="#c8c8c8",
+            color_three: str = "white",
             border_color: str="#1ee16c",
-            use_border_color: bool = False,
             border_radius: int=8,
             top_margin: int=15,
             bg: str="white",
             left_spacing: int=14,
-            excel_mode: bool = True,
+            mode: str = "folder",
             parent=None
         ):
         super(QtButtonLineEdit, self).__init__()
@@ -38,12 +38,13 @@ class QtButtonLineEdit(QGroupBox):
         self._title_color = title_color
         self._color_one = color_one
         self._color_two = color_two
+        self._color_three = color_three
         self._border_color = border_color
-        self._use_border_color = use_border_color
         self._border_radius = border_radius
         self._top_margin = top_margin
         self._bg = bg
         self._left_spacing = left_spacing
+        self._mode = mode
 
         self.setTitle(title)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
@@ -66,10 +67,8 @@ class QtButtonLineEdit(QGroupBox):
         self.image_bttn.pressed.connect(self._image_pressed)
         self.image_bttn.released.connect(self._image_released)
         self.image_bttn.clicked.connect(self.button_clicked.emit)      # Link signals to act as an entire button
-        if excel_mode:
-            self.image_bttn.clicked.connect(self._initiate_excel_dialog)
-        else:
-            self.image_bttn.clicked.connect(self._initiate_file_dialog)
+        # self.image_bttn.clicked.connect(self._initiate_excel_dialog)
+        self.image_bttn.clicked.connect(self._initiate_file_dialog)
 
     def setup_widget(self):
         # ****************************************
@@ -101,16 +100,12 @@ class QtButtonLineEdit(QGroupBox):
         # ***********************************
         # **** Create Styles for Widgets ****
         # ***********************************
-        if not self._use_border_color:
-            self._border_color = "none"
-        else:
-            self._border_color = "1px solid "  + self._border_color
         custom_focus_style = focused_template.format(
             _title_size=self._title_size,
             _text_size=self._text_size,
             _title_color=self._title_color,
             _color_one=self._color_one,
-            _border_color=self._border_color,
+            _color_three=self._color_three,
             _border_radius=self._border_radius,
             _top_margin=self._top_margin,
             _bg=self._bg,
@@ -151,6 +146,9 @@ class QtButtonLineEdit(QGroupBox):
     def text(self):
         return self.enhanced_line_edit.text()
 
+    def set_text(self, text: str):
+        self.enhanced_line_edit.setText(text)
+
     def resizeEvent(self, event):
         button_size = self.image_bttn.sizeHint()
         frame_width = self.enhanced_line_edit.style().pixelMetric(QStyle.PixelMetric.PM_DefaultFrameWidth)
@@ -189,10 +187,25 @@ class QtButtonLineEdit(QGroupBox):
         """
         home = str(pathlib.Path.home())
 
-        folder_name = QFileDialog.getExistingDirectory(
-            parent=self,
-            caption='Select a directory',
-            directory=home
-        )
+        dialog = QFileDialog(self)
+        dialog.setDirectory(home)
+        if self._mode == "folder":
+            dialog.setWindowTitle("Select a Directory")
+            dialog.setFileMode(QFileDialog.FileMode.Directory)
+            dialog.setOption(QFileDialog.Option.ShowDirsOnly, True)
+        else:
+            dialog.setWindowTitle("Select a File")
+            dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
+            dialog.setNameFilter("All Files (*)")
 
-        self.enhanced_line_edit.setText(folder_name)
+        if dialog.exec():
+            selected_path = dialog.selectedFiles()[0]
+            self.enhanced_line_edit.setText(selected_path)
+
+        #folder_name = QFileDialog.getExistingDirectory(
+        #    parent=self,
+        #    caption='Select a directory',
+        #    directory=home,
+        #)
+
+        #self.enhanced_line_edit.setText(folder_name)

@@ -53,8 +53,8 @@ class SetupMainWindow:
         {
             "bttn_icon" : "etb_icon.svg",
             "bttn_id" : "etb_model_bttn",
-            "bttn_text" : "Tumor Modeling",
-            "bttn_tooltip" : "Modeling with GDRS tumor model",
+            "bttn_text" : "GDRS Modeling",
+            "bttn_tooltip" : "Tumor volume modeling with GDRS model.",
             "show_top" : True,
             "is_active" : False
         },
@@ -67,10 +67,10 @@ class SetupMainWindow:
             "is_active": False
         },
         {
-            "bttn_icon" : "icon_add_user.svg",
-            "bttn_id" : "rosetta_bttn",
-            "bttn_text" : "Rosetta",
-            "bttn_tooltip" : "Multi-Model framework",
+            "bttn_icon" : "blueprint_icon2.svg",
+            "bttn_id" : "abstract_visualizer_bttn",
+            "bttn_text" : "Abstract Visualizer",
+            "bttn_tooltip" : "Abstract patient data visualizer.",
             "show_top" : True,
             "is_active" : False
         },
@@ -276,8 +276,9 @@ class SetupMainWindow:
         self.project_dir_entry = QtButtonLineEdit(
             title="Directory",
             title_color=self.themes["app_color"]["text_foreground"],
+            color_three=self.themes["app_color"]["blue_one"],
             top_margin=19,
-            excel_mode=False,
+            mode="folder",
             parent=self.ui.load_pages.directory_frame
         )
         self.project_dir_entry.setObjectName(u'proj_dir_entry')
@@ -313,7 +314,7 @@ class SetupMainWindow:
         self.ui.load_pages.project_dir_frame.setMaximumWidth(self.ui.load_pages.dir_entry_interaction.sizeHint().width())
 
         # * ETB File Page Setup * #
-        etb_upload_widget = QtUploadMainWidget(parent=self.ui.load_pages.file_scroll_contents)
+        gdrs_upload_widget = QtUploadMainWidget(parent=self.ui.load_pages.file_scroll_contents)
 
         #self.nonsystemic_table = PyTableWidget(
         #    radius = 8,
@@ -330,9 +331,9 @@ class SetupMainWindow:
         #)
         #self.nonsystemic_table.hide()
 
-        etb_upload_widget.submit_data_bttn.clicked.connect(lambda: MainFunctions.inititate_file_check(self, etb_upload_widget))
+        gdrs_upload_widget.submit_data_bttn.clicked.connect(lambda: MainFunctions.inititate_file_check(self, gdrs_upload_widget))
 
-        self.ui.load_pages.file_content_layout.addWidget(etb_upload_widget)
+        self.ui.load_pages.file_content_layout.addWidget(gdrs_upload_widget)
 
         # * ETB Parameters Page Setup * #
         # TODO: Parent should be self.ui.load_pages.parameter_scroll_contents
@@ -552,6 +553,11 @@ class SetupMainWindow:
         results_label.setText("Enhanced Results Go Here.")
         results_label.setStyleSheet("color: black; font-size:13px;")
         self.ui.load_pages.results_content_layout.addWidget(results_label)
+
+        # Abstract Visualizer Settings Page #
+        abstract_visualizer_menu = QtAbstractMenu()
+
+        self.ui.load_pages.visualizer_scroll_layout.addWidget(abstract_visualizer_menu)
 
         # PAGE 2
         # CIRCULAR PROGRESS 1

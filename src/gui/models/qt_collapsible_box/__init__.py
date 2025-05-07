@@ -1,2 +1,3 @@
 from .qt_collapsible_widget import QtCollapsibleWidget
 from .qt_sectional_widget import QtSectionalWidget
+from .qt_helper_window import QtHelperWindow

@@ -4,6 +4,7 @@ from src.core.pyqt_core import *
 from src.core.app_config import IMG_RSC_PATH
 from src.core.json.json_themes import Themes
 from src.gui.models.py_toggle import PyToggle
+from .qt_helper_window import QtHelperWindow
 
 
 class QtCollapsibleWidget(QWidget):
@@ -38,6 +39,7 @@ class QtCollapsibleWidget(QWidget):
 
         # Set Signals
         self.collapse_toggle.clicked.connect(self.toggle_collapsed)
+        self.help_bttn.clicked.connect(self.show_window)
 
     def _setup_widget(self):
         container_frame = QFrame(self)
@@ -56,7 +58,7 @@ class QtCollapsibleWidget(QWidget):
         self.help_bttn = QToolButton(header_area)
         self.help_bttn.setObjectName('help_bttn')
         self.help_bttn.setIcon(QIcon(icon_path))
-        self.help_bttn.setIconSize(QSize(30, 30))
+        self.help_bttn.setIconSize(QSize(37, 37))
         self.help_bttn.setStyleSheet('background: none; border: none;')
         self.help_bttn.setCursor(Qt.CursorShape.PointingHandCursor)
 
@@ -68,19 +70,20 @@ class QtCollapsibleWidget(QWidget):
         default_label = QLabel(toggle_frame)
         default_label.setObjectName('default_label')
         default_label.setText('(Default)')
-        default_label.setStyleSheet(f'font-size: 12px; color: {self.themes["app_color"]["text_color"]};')
+        default_label.setStyleSheet(f'font-size: 12px; color: {self.themes["app_color"]["text_foreground"]};')
+        default_label.hide()
 
         self.collapse_toggle = PyToggle(
             width=34,
             height=20,
             ellipse_y=2,
-            bg_color = self.themes['app_color']['text_color'],
-            circle_color = self.themes['app_color']['yellow_bg'],
-            active_color = self.themes['app_color']['blue_bg'],
+            bg_color = self.themes['app_color']['dark_two'],
+            circle_color = self.themes['app_color']['white'],
+            active_color = self.themes['app_color']['context_color'],
             parent=toggle_frame
         )
         self.collapse_toggle.setObjectName('collapse_toggle')
-        self.collapse_toggle.setChecked(True)
+        self.collapse_toggle.setChecked(False)
 
         toggle_layout = QVBoxLayout(toggle_frame)
         toggle_layout.setObjectName('toggle_layout')
@@ -92,7 +95,7 @@ class QtCollapsibleWidget(QWidget):
         title_label = QLabel(container_frame)
         title_label.setObjectName('title_label')
         title_label.setText(self._title)
-        title_label.setStyleSheet(f'font-size: 16px; color: {self.themes["app_color"]["text_color"]};')
+        title_label.setStyleSheet(f'font-size: 16px; color: {self.themes["app_color"]["dark_one"]}; padding-bottom: 3px;')
 
         header_layout = QHBoxLayout(header_area)
         header_layout.setObjectName('header_layout')
@@ -130,7 +133,7 @@ class QtCollapsibleWidget(QWidget):
         """
         custom_style = groupbox_template.format(
             _radius = self._radius,
-            _bg_color_one = self.themes['app_color']['yellow_bg']
+            _bg_color_one = self.themes['app_color']['bg_one']
         )
         
         scroll_area_container = QFrame(container_frame)
@@ -183,7 +186,7 @@ class QtCollapsibleWidget(QWidget):
         self.imported_content = content
         self.scroll_contents_layout.addWidget(content)
         collapsed_height = self.sizeHint().height() - self.scroll_area.maximumHeight()
-        content_height = content.sizeHint().height()
+        content_height = content.sizeHint().height() + 75
 
         for index in range(0, self.toggle_animation.animationCount() - 1):
             section_animation = self.toggle_animation.animationAt(index)
@@ -200,7 +203,7 @@ class QtCollapsibleWidget(QWidget):
         self._animation_duration = 400
 
     def toggle_collapsed(self, collapsed: bool):
-        if collapsed:
+        if not collapsed:
             #self.collapse_toggle.setChecked(False)
             self.toggle_animation.setDirection(QAbstractAnimation.Direction.Backward)
         else:
@@ -224,6 +227,20 @@ class QtCollapsibleWidget(QWidget):
                 widget.setParent(None)
                 del widget
             gc.collect()
+
+    def show_window(self):
+        if self._message_window is not None:
+            self._message_window.close()
+            self._message_window = None
+
+        curr_setting_name = self._title
+
+        self._message_window = QtHelperWindow(
+            setting_name=curr_setting_name,
+            setting_msg=self._help_msg
+        )
+        self._message_window.closed.connect(self.on_msg_close)
+        self._message_window.show()
 
     def on_msg_close(self):
         self._message_window = None

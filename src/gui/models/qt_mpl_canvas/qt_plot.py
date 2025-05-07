@@ -5,11 +5,13 @@ from matplotlib.figure import Figure
 
 
 class QtPlotMenu(QWidget):
-    def __init__(self,
-                fig: Figure,
-                ax,
-                dpi: int=100,
-                parent=None):
+    def __init__(
+        self,
+        fig: Figure,
+        ax,
+        dpi: int=100,
+        parent=None
+    ):
         super().__init__()
 
         if parent != None:

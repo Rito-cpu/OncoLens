@@ -200,6 +200,8 @@ class MainFunctions():
                     available_groupbox.collapse_widget()
 
                 MainFunctions.setup_etb_settings(self, file_data)
+
+                # Keep
                 MainFunctions.set_page(self, self.ui.load_pages.etb_settings_subpage)
                 upload_bttn = self.ui.right_column.etb_bttn_frame.findChild(PyPushButton, "input_file_menu_bttn")
                 settings_bttn = self.ui.right_column.etb_bttn_frame.findChild(PyPushButton, "parameter_menu_bttn")

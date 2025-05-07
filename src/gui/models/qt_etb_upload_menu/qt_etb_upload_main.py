@@ -71,10 +71,10 @@ class QtUploadMainWidget(QWidget):
         line_entry_frame.setFrameShadow(QFrame.Shadow.Plain)
 
         self.data_path_entry = QtButtonLineEdit(
-            title="Data Path",
+            title="GDRS Data",
             title_color=self.themes["app_color"]["text_foreground"],
-            top_margin=19,
-            use_border_color=True,
+            color_three=self.themes["app_color"]["green_two"],
+            top_margin=17,
             parent=line_entry_frame
         )
         self.data_path_entry.setObjectName("data_path_entry")

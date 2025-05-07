@@ -47,7 +47,6 @@ class QtUploadArea(QWidget):
             title="File Search",
             title_color=self.themes["app_color"]["text_foreground"],
             top_margin=19,
-            use_border_color=True,
             parent=file_entry_frame
         )
         self.etb_file_entry.setObjectName("etb_file_entry")

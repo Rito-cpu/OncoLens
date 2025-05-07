@@ -91,13 +91,13 @@ class MainWindow(QMainWindow):
             MainFunctions.set_right_column_menu(self, self.ui.right_column.enhanced_modeling_submenu)
 
         # Rosetta Main Bttn
-        if menu_bttn.objectName() == "rosetta_bttn":
+        if menu_bttn.objectName() == "abstract_visualizer_bttn":
             # Select Menu
             self.ui.left_menu.select_only_one(menu_bttn.objectName())
             top_settings.setEnabled(True)
 
             # Load Page 3
-            MainFunctions.set_page(self, self.ui.load_pages.rosetta_model_page)
+            MainFunctions.set_page(self, self.ui.load_pages.abstract_visualizer_page)
             MainFunctions.set_right_column_menu(self, self.ui.right_column.menu_2)
 
         # BOTTOM INFORMATION
