@@ -111,7 +111,7 @@ class SettingsGroupBox(QWidget):
         main_layout.addWidget(self.header_line, row, 2, 1, 1)
         main_layout.addLayout(scroll_area_layout, row + 1, 0, 1, 3)
 
-    def set_content(self, content: QWidget, new_duarion: int = None) -> None:
+    def set_content(self, content: QWidget, new_duarion: int = None, additional_height: int = 0) -> None:
         # self._toggle(False)
         self._clear_layout()
 
@@ -121,7 +121,7 @@ class SettingsGroupBox(QWidget):
         self._main_content = content
         self.scroll_contents_layout.addWidget(content)
         collapsed_height = self.sizeHint().height() - self.scroll_area.maximumHeight()
-        content_height = content.sizeHint().height()
+        content_height = content.sizeHint().height() + additional_height
 
         for index in range(0, self.toggle_animation.animationCount() - 1):
             section_animation = self.toggle_animation.animationAt(index)

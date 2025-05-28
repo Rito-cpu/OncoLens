@@ -11,6 +11,7 @@ class QtAbstractPlot(QWidget):
 
         themes = Themes()
         self.themes = themes.items
+        self.title = "Abstract Plot Visual"
 
         self._setup_widget()
 

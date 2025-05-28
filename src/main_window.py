@@ -98,7 +98,7 @@ class MainWindow(QMainWindow):
 
             # Load Page 3
             MainFunctions.set_page(self, self.ui.load_pages.abstract_visualizer_page)
-            MainFunctions.set_right_column_menu(self, self.ui.right_column.menu_2)
+            MainFunctions.set_right_column_menu(self, self.ui.right_column.abstract_visualizer_submenu)
 
         # BOTTOM INFORMATION
         if menu_bttn.objectName() == "bttn_info":
@@ -221,6 +221,33 @@ class MainWindow(QMainWindow):
             results_bttn.set_highlight()
 
         self.adaptive_modeling_page_bookmark = page
+
+    def abstract_visualizer_bookmark_event(self, page, keyword):
+        MainFunctions.set_page(self, page)
+
+        upload_bttn = self.ui.right_column.abstract_vis_bttn_frame.findChild(PyPushButton, 'abs_vis_upload_menu')
+        settings_bttn = self.ui.right_column.abstract_vis_bttn_frame.findChild(PyPushButton, 'abs_vis_settings_menu')
+        plot_bttn = self.ui.right_column.abstract_vis_bttn_frame.findChild(PyPushButton, 'abs_vis_plot_menu')
+
+        multi_menu = self.ui.load_pages.visualizer_scroll_content.findChild(QWidget, "abstract_visualizer_menu")
+        
+        if keyword == "upload":
+            upload_bttn.set_highlight()
+            settings_bttn.remove_highlight()
+            plot_bttn.remove_highlight()
+            multi_menu.set_file_page()
+        elif keyword == "settings":
+            upload_bttn.remove_highlight()
+            settings_bttn.set_highlight()
+            plot_bttn.remove_highlight()
+            multi_menu.set_settings_page()
+        else:
+            upload_bttn.remove_highlight()
+            settings_bttn.remove_highlight()
+            plot_bttn.set_highlight()
+            multi_menu.set_plot_page()
+
+        self.abstract_visualizer_page_bookmark = page
 
     # RESIZE EVENT
     def resizeEvent(self, event):

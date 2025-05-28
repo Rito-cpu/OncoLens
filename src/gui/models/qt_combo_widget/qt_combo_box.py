@@ -11,6 +11,8 @@ class QtComboBox(QComboBox):
         self,
         bg_color: str = "black",
         text_color: str = "white",
+        green_color: str = "lightgreen",
+        alternate_bg: str = "silver",
         font_size: int = 12,
         parent=None
     ):
@@ -28,7 +30,11 @@ class QtComboBox(QComboBox):
             bg=bg_color,
             color=text_color,
             path=arrow_path,
-            font_size=font_size
+            font_size=font_size,
+            highlight_bg_on=green_color,
+            highlight_color_on=bg_color,
+            highlight_bg_off=green_color,
+            alternate_bg=alternate_bg
         )
 
         self.setStyleSheet(combo_box_style)

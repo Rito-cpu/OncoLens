@@ -116,52 +116,42 @@ class Ui_RightColumn(object):
 
         self.menus.addWidget(self.enhanced_modeling_submenu)
 
-        # Menu 2 page setup
-        self.menu_2 = QWidget()
-        self.menu_2.setObjectName(u"menu_2")
+        ###################################
+        # Abstract Visualization Sub-Page #
+        ###################################
+        self.abstract_visualizer_submenu = QWidget()
+        self.abstract_visualizer_submenu.setObjectName(u"abstract_visualizer_submenu")
 
-        self.verticalLayout_2 = QVBoxLayout(self.menu_2)
-        self.verticalLayout_2.setSpacing(5)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(5, 5, 5, 5)
+        self.abstract_vis_layout = QVBoxLayout(self.abstract_visualizer_submenu)
+        self.abstract_vis_layout.setSpacing(5)
+        self.abstract_vis_layout.setObjectName(u"abstract_vis_layout")
+        self.abstract_vis_layout.setContentsMargins(5, 5, 5, 5)
 
-        self.btn_2_widget = QWidget(self.menu_2)
-        self.btn_2_widget.setObjectName(u"btn_2_widget")
-        self.btn_2_widget.setMinimumSize(QSize(0, 40))
-        self.btn_2_widget.setMaximumSize(QSize(16777215, 40))
+        self.abstract_vis_title = QLabel(self.abstract_visualizer_submenu)
+        self.abstract_vis_title.setObjectName(u"abstract_vis_title")
+        self.abstract_vis_title.setFont(font)
+        self.abstract_vis_title.setStyleSheet(u"font-size: 16pt")
+        self.abstract_vis_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.btn_2_layout = QVBoxLayout(self.btn_2_widget)
-        self.btn_2_layout.setSpacing(0)
-        self.btn_2_layout.setObjectName(u"btn_2_layout")
-        self.btn_2_layout.setContentsMargins(0, 0, 0, 0)
+        self.abstract_vis_bttn_frame = QFrame(self.abstract_visualizer_submenu)
+        self.abstract_vis_bttn_frame.setObjectName(u"abstract_vis_bttn_frame")
+        self.abstract_vis_bttn_frame.setFrameShape(QFrame.Shape.NoFrame)
+        self.abstract_vis_bttn_frame.setFrameShadow(QFrame.Shadow.Raised)
 
-        self.verticalLayout_2.addWidget(self.btn_2_widget)
+        self.abstract_vis_bttn_layout = QVBoxLayout(self.abstract_vis_bttn_frame)
+        self.abstract_vis_bttn_layout.setObjectName(u"abstract_vis_bttn_layout")
+        self.abstract_vis_bttn_layout.setContentsMargins(5, 5, 5, 5)
+        self.abstract_vis_bttn_layout.setSpacing(75)
 
-        self.label_2 = QLabel(self.menu_2)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setFont(font)
-        self.label_2.setStyleSheet(u"font-size: 16pt")
-        self.label_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.abstract_vis_layout.addWidget(self.abstract_vis_title)
+        self.abstract_vis_layout.addStretch(1)
+        self.abstract_vis_layout.addWidget(self.abstract_vis_bttn_frame)
+        self.abstract_vis_layout.addStretch(1)
 
-        self.verticalLayout_2.addWidget(self.label_2)
+        self.menus.addWidget(self.abstract_visualizer_submenu)
 
-        self.label_3 = QLabel(self.menu_2)
-        self.label_3.setObjectName(u"label_3")
-
-        font1 = QFont()
-        font1.setPointSize(9)
-
-        self.label_3.setFont(font1)
-        self.label_3.setStyleSheet(u"font-size: 9pt")
-        self.label_3.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label_3.setWordWrap(True)
-
-        self.verticalLayout_2.addWidget(self.label_3)
-
-        self.menus.addWidget(self.menu_2)
-
+        # Finish setup
         self.main_pages_layout.addWidget(self.menus)
-
 
         self.retranslateUi(RightColumn)
 
@@ -176,6 +166,5 @@ class Ui_RightColumn(object):
         self.etb_submenu_label.setText(QCoreApplication.translate("RightColumn", u"Modeling Menus", None))
         self.enhanced_modeling_title.setText(QCoreApplication.translate("RightColumn", u"Enhanced Modeling Menus", None))
         self.label_1.setText(QCoreApplication.translate("RightColumn", u"Menu 1 - Right Menu", None))
-        self.label_2.setText(QCoreApplication.translate("RightColumn", u"Rosetta Sub-Page\nMenu", None))
-        self.label_3.setText(QCoreApplication.translate("RightColumn", u"Currently Unavailable", None))
+        self.abstract_vis_title.setText(QCoreApplication.translate("RightColumn", u"Abstract Visualizer Menus", None))
     # retranslateUi

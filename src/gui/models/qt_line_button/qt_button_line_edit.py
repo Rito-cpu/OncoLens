@@ -116,6 +116,7 @@ class QtButtonLineEdit(QGroupBox):
         custom_unfocus_style = unfocused_template.format(
             _title_size=self._title_size,
             _text_size=self._text_size,
+            _title_color=self._title_color,
             _color_two=self._color_two,
             _border_radius=self._border_radius,
             _top_margin=self._top_margin,

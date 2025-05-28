@@ -46,6 +46,7 @@ unfocused_template = """
     QGroupBox:title {{
         subcontrol-origin: margin;
         left: {_left_spacing}px;
+        color: {_title_color};
     }}
     QLineEdit {{
         font-size: {_text_size}px;

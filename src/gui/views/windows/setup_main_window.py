@@ -67,7 +67,7 @@ class SetupMainWindow:
             "is_active": False
         },
         {
-            "bttn_icon" : "blueprint_icon2.svg",
+            "bttn_icon" : "parameters_icon.svg",
             "bttn_id" : "abstract_visualizer_bttn",
             "bttn_text" : "Abstract Visualizer",
             "bttn_tooltip" : "Abstract patient data visualizer.",
@@ -171,7 +171,7 @@ class SetupMainWindow:
         #################################
         # * Right Column Menu Buttons * #
         #################################
-        # * Basic Data Modeling Page Selection Button Creation * #
+        # Basic Data Modeling Page Selection Button Creation #
         self.input_file_menu_bttn = PyPushButton(
             text="Import Page",
             radius=8,
@@ -220,7 +220,7 @@ class SetupMainWindow:
         self.parameter_menu_bttn.clicked.connect(partial(self.data_modeling_bookmark_event, self.ui.load_pages.etb_settings_subpage))
         self.plot_menu_bttn.clicked.connect(partial(self.data_modeling_bookmark_event, self.ui.load_pages.etb_plot_subpage))
         
-        # * Adaptive Modeling Page Selection Button Creation * #
+        # Adaptive Modeling Page Selection Button Creation #
         self.upload_menu_bttn = PyPushButton(
             text="Upload & Model Menu",
             radius=8,
@@ -269,6 +269,55 @@ class SetupMainWindow:
         self.model_settings_menu_bttn.clicked.connect(lambda: self.adaptive_modeling_bookmark_event(self.ui.load_pages.modeling_settings_page))
         self.results_menu_bttn.clicked.connect(lambda: self.adaptive_modeling_bookmark_event(self.ui.load_pages.enhanced_results_page))
 
+        # Abstract Visualizer Page Selection #
+        self.abs_vis_upload_menu = PyPushButton(
+            text="Upload Data Menu",
+            radius=8,
+            color=self.themes["app_color"]["white"],
+            bg_color=self.themes["app_color"]["dark_one"],
+            bg_color_hover=self.themes["app_color"]["dark_three"],
+            bg_color_pressed=self.themes["app_color"]["dark_four"],
+            highlight=self.themes["app_color"]["green"],
+            parent=self.ui.right_column.abstract_vis_bttn_frame
+        )
+        self.abs_vis_upload_menu.setObjectName("abs_vis_upload_menu")
+        self.abs_vis_upload_menu.setFixedHeight(38)
+        self.abs_vis_upload_menu.set_highlight()
+
+        self.abs_vis_settings_menu = PyPushButton(
+            text="Settings Menu",
+            radius=8,
+            color=self.themes["app_color"]["white"],
+            bg_color=self.themes["app_color"]["dark_one"],
+            bg_color_hover=self.themes["app_color"]["dark_three"],
+            bg_color_pressed=self.themes["app_color"]["dark_four"],
+            highlight=self.themes["app_color"]["green"],
+            parent=self.ui.right_column.abstract_vis_bttn_frame
+        )
+        self.abs_vis_settings_menu.setObjectName("abs_vis_settings_menu")
+        self.abs_vis_settings_menu.setFixedHeight(38)
+
+        self.abs_vis_plot_menu = PyPushButton(
+            text="Plot Menu",
+            radius=8,
+            color=self.themes["app_color"]["white"],
+            bg_color=self.themes["app_color"]["dark_one"],
+            bg_color_hover=self.themes["app_color"]["dark_three"],
+            bg_color_pressed=self.themes["app_color"]["dark_four"],
+            highlight=self.themes["app_color"]["green"],
+            parent=self.ui.right_column.abstract_vis_bttn_frame
+        )
+        self.abs_vis_plot_menu.setObjectName('abs_vis_plot_menu')
+        self.abs_vis_plot_menu.setFixedHeight(38)
+
+        self.ui.right_column.abstract_vis_bttn_layout.addWidget(self.abs_vis_upload_menu)
+        self.ui.right_column.abstract_vis_bttn_layout.addWidget(self.abs_vis_settings_menu)
+        self.ui.right_column.abstract_vis_bttn_layout.addWidget(self.abs_vis_plot_menu)
+
+        self.abs_vis_upload_menu.clicked.connect(lambda: self.abstract_visualizer_bookmark_event(self.ui.load_pages.abstract_visualizer_page, "upload"))
+        self.abs_vis_settings_menu.clicked.connect(lambda: self.abstract_visualizer_bookmark_event(self.ui.load_pages.abstract_visualizer_page, "settings"))
+        self.abs_vis_plot_menu.clicked.connect(lambda: self.abstract_visualizer_bookmark_event(self.ui.load_pages.abstract_visualizer_page, "plot"))
+
         #########################################
         # Application Pages/Menu Initialization #
         #########################################
@@ -276,7 +325,7 @@ class SetupMainWindow:
         self.project_dir_entry = QtButtonLineEdit(
             title="Directory",
             title_color=self.themes["app_color"]["text_foreground"],
-            color_three=self.themes["app_color"]["blue_one"],
+            color_three=self.themes["app_color"]["green_two"],
             top_margin=19,
             mode="folder",
             parent=self.ui.load_pages.directory_frame
@@ -555,7 +604,8 @@ class SetupMainWindow:
         self.ui.load_pages.results_content_layout.addWidget(results_label)
 
         # Abstract Visualizer Settings Page #
-        abstract_visualizer_menu = QtAbstractMenu()
+        abstract_visualizer_menu = QtAbstractMenu(parent=self.ui.load_pages.visualizer_scroll_content)
+        abstract_visualizer_menu.setObjectName('abstract_visualizer_menu')
 
         self.ui.load_pages.visualizer_scroll_layout.addWidget(abstract_visualizer_menu)
 

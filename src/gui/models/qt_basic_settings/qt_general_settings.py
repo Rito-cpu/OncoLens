@@ -88,7 +88,8 @@ class GeneralSettings(QGroupBox):
         self.saved_settings_line = QtButtonLineEdit(
             title="Settings File",
             title_color=self._toggle_bg_color,
-            border_color=self._toggle_bg_color,
+            border_color=self._active_color,
+            color_three=self._active_color,
             top_margin=19,
             parent=content_widget
         )

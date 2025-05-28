@@ -8,6 +8,8 @@ from .qt_helper_window import QtHelperWindow
 
 
 class QtCollapsibleWidget(QWidget):
+    toggled = pyqtSignal(bool)
+
     def __init__(
         self,
         title: str,
@@ -15,6 +17,7 @@ class QtCollapsibleWidget(QWidget):
         animation_duration: int=400,
         radius: int=13,
         point_size: int=14,
+        extra_height: int = 0,
         parent=None
     ):
         super().__init__()
@@ -27,6 +30,7 @@ class QtCollapsibleWidget(QWidget):
         self._animation_duration = animation_duration
         self._radius = radius
         self._point_size = point_size
+        self._extra_height = extra_height
         self._message_window = None
 
         themes = Themes()
@@ -39,6 +43,7 @@ class QtCollapsibleWidget(QWidget):
 
         # Set Signals
         self.collapse_toggle.clicked.connect(self.toggle_collapsed)
+        self.collapse_toggle.toggled.connect(self.toggle_event)
         self.help_bttn.clicked.connect(self.show_window)
 
     def _setup_widget(self):
@@ -79,7 +84,7 @@ class QtCollapsibleWidget(QWidget):
             ellipse_y=2,
             bg_color = self.themes['app_color']['dark_two'],
             circle_color = self.themes['app_color']['white'],
-            active_color = self.themes['app_color']['context_color'],
+            active_color = self.themes['app_color']['green_two'],
             parent=toggle_frame
         )
         self.collapse_toggle.setObjectName('collapse_toggle')
@@ -186,7 +191,7 @@ class QtCollapsibleWidget(QWidget):
         self.imported_content = content
         self.scroll_contents_layout.addWidget(content)
         collapsed_height = self.sizeHint().height() - self.scroll_area.maximumHeight()
-        content_height = content.sizeHint().height() + 75
+        content_height = content.sizeHint().height() + self._extra_height
 
         for index in range(0, self.toggle_animation.animationCount() - 1):
             section_animation = self.toggle_animation.animationAt(index)
@@ -263,3 +268,12 @@ class QtCollapsibleWidget(QWidget):
 
     def get_content_widget(self) -> QWidget:
         return self.imported_content
+    
+    def is_checked(self):
+        return self.collapse_toggle.isChecked()
+    
+    def toggle_event(self):
+        if self.is_checked():
+            self.toggled.emit(True)
+        else:
+            self.toggled.emit(False)
